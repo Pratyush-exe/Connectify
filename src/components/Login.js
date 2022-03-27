@@ -1,47 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import firebase from '../Firebase';
+import "../styles/Login.css";
+import img_login from "../images/Untitled.png"
+
 
 function Login() {
+    console.log("Exist")
     const history = useHistory();
-    const [creds, setCreds] = useState({ nickname: '' });
+    const [creds, setCreds] = useState({ nickname: '' , password: ''});
     const [showLoading, setShowLoading] = useState(false);
-    const ref = firebase.database().ref('users/');
+    const [SignUp, setSignUp] = useState(false);
+    const ref = firebase.database().ref('users');
+    useEffect(() => {
+        console.log("Here")
+        if(SignUp===true){
+            document.getElementById("formNickname").textContent = "Sign Up"
+            document.getElementById("login_login").textContent = "Continue"
+            document.getElementById("loginStatus").textContent = "Existing User? Please "
+            document.getElementById("ChangeButton").textContent = "Sign In"
+        }
+        else {
+            document.getElementById("formNickname").textContent = "Sign In"
+            document.getElementById("login_login").textContent = "Login"
+            document.getElementById("loginStatus").textContent = "New User? Please "
+            document.getElementById("ChangeButton").textContent = "Sign Up"
+        }
+    }, [SignUp])
 
+    // setSignUp(true)
+    
     const login = (e) => {
         e.preventDefault();
+        let usid = document.getElementById("nickname").value
+        let pswd = document.getElementById("signup-password").value
+        console.log(usid, pswd)
+        let flag=0;
         setShowLoading(true);
-        ref.orderByChild('nickname').equalTo(creds.nickname).once('value', snapshot => {
-            if (snapshot.exists()) {
-                localStorage.setItem('nickname', creds.nickname);
-                history.push('/roomlist');
-                setShowLoading(false);
-            } else {
-                const newUser = firebase.database().ref('users/').push();
-                newUser.set(creds);
-                localStorage.setItem('nickname', creds.nickname);
+        ref.once("value").then(function (snapshot) {
+            snapshot.forEach(function(childSnap){
+                console.log(childSnap.val()["nickname"], childSnap.val()["password"])
+                if(childSnap.val()["nickname"] === usid && childSnap.val()["password"] === pswd){
+                    // Login Successfull
+                    flag=1
+                }
+            })
+            if(flag===1 && !SignUp){
+                localStorage.setItem('nickname', creds.nickname)
+                localStorage.setItem('password', creds.password)
                 history.push('/roomlist');
                 setShowLoading(false);
             }
-        });
+            else if(!SignUp){
+                setShowLoading(false); 
+                alert("Incorrect Username/password")
+            }
+            else if(flag===1 && SignUp){
+                setShowLoading(false);
+                alert("ID exists")
+            }
+            else if(SignUp){
+                const newUser = firebase.database().ref('users/').push();
+                newUser.set({...creds, 'password':pswd});
+                localStorage.setItem('nickname', creds.nickname);
+                localStorage.setItem('password', creds.password)
+                history.push('/roomlist');
+                setShowLoading(false); 
+            }
+        })
     };
 
     return (
-        <div>
-            { showLoading && <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif" alt="Loading" id="loading" height="100px" weight="100px" /> }
+        <div id="mainLoginCont">
+            { showLoading && <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif" alt="Loading" id="loading" /> }
             <div id="loginContainer">
-                <form onSubmit={login} id="loginContainerForm">
-                    <div>
-                        <h2 id="formNickname">Nickname</h2>
-                        <input type="text" name="nickname" id="nickname" placeholder="Enter Your Nickname" value={creds.nickname} onChange={(e) => {
+                <div id="loginContainer_Cont">
+                    <img src={img_login} 
+                    id="loginImg" alt="Login"/>
+                    <form onSubmit={login} id="loginContainerForm">
+                        <h2 id="formNickname">Sign In</h2>
+                        <input type="text" name="nickname" id="nickname" placeholder="Username" value={creds.nickname} onChange={(e) => {
                             e.persist();
-                            setCreds({...creds, [e.target.name]: e.target.value});
+                            setCreds({...creds, "nickname": e.target.value});
                         }} />
-                    </div>
-                    <button type="submit" id="login_login">
-                        Login
-                    </button>
-                </form>
+                        <input type="text" id="signup-password" placeholder="Password" />
+                        <button type="submit" id="login_login"> Login </button>
+                        <div id="divStatus">
+                            <p id="loginStatus">New User? Please </p>
+                            <button type="button" id="ChangeButton" onClick={()=>{
+                                    setSignUp(!SignUp)
+                            }} > SignUp </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
