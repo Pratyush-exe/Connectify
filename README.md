@@ -21,3 +21,18 @@ Major Techs used include React, Firebase, Python, Heroku, sklearn.
     2. Video Chat with poeple, without need of loging In using email.
     3. Watch synced youtube videos or listen to synced youtube music with the "room-mates" 
     4. Play games with mates.
+
+# How to run on Linux Machine:
+* install npm 
+`sudo apt install nodejs`
+
+* clone repository
+`git clone <link>`
+
+* install dependencies in root folder
+`npm i`
+
+* run `npm start`
+
+* the website is up and running on 
+`localhost:3000/`
