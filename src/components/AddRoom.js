@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import firebase from '../Firebase';
+import "../styles/AddRoom.css"
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import Swal from 'sweetalert2'
+
 
 function AddRoom() {
     const history = useHistory();
@@ -13,33 +17,39 @@ function AddRoom() {
         setShowLoading(true);
         ref.orderByChild('roomname').equalTo(room.roomname).once('value', snapshot => {
             if (snapshot.exists()) {
-                alert("Room name already exist!")
+                setShowLoading(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Try again...',
+                    text:'This room already exists'
+                })
             } else {
                 const newRoom = firebase.database().ref('rooms/').push();
                 newRoom.set(room);
                 history.goBack();
-                setShowLoading(false);
             }
         });
     };
 
     return (
-        <div>
-            { showLoading && <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif" alt="Loading" id="loading" height="100px" weight="100px" /> }
+        <motion.div id="AddRoomCont"
+            initial={{paddingTop: '230px'}}
+            animate={{paddingTop: '180px'}}
+            transition={{duration: 0.3}}>
+            { showLoading && <div className="loadingSpinnerContainer"> <div className="loadingSpinner"> </div> </div> }
             <div id="add_room_container">
-                <h2>Please Enter Room Name</h2>
+                <h2>Enter room name</h2>
                 <form onSubmit={save}>
                     <div id="add_room_Cont">
-                        <h1>Room Name</h1>
                         <input type="text" name="roomname" id="roomname" placeholder="Enter Room Name" value={room.roomname} onChange={(e) => {
                             e.persist();
                             setRoom({...room, [e.target.name]: e.target.value});
                         }} />
+                        <button variant="primary" type="submit" id="add_Bt_room"> Add </button>
                     </div>
-                    <button variant="primary" type="submit"> Add </button>
                 </form>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

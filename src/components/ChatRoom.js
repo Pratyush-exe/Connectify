@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Moment from 'moment';
 import firebase from '../Firebase';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import '../Styles.css';
+import '../styles/ChatRoom.css';
 
 function ChatRoom() {
     const [chats, setChats] = useState([]);
@@ -55,13 +55,29 @@ function ChatRoom() {
 
     const submitMessage = (e) => {
         e.preventDefault();
+        
         const chat = newchat;
         chat.roomname = roomname;
         chat.nickname = nickname;
         chat.date = Moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
         chat.type = 'message';
-        const newMessage = firebase.database().ref('chats/').push();
-        newMessage.set(chat);
+
+        let text = document.getElementById("message").value
+        fetch("http://127.0.0.1:5000/CheckOffensive?text=" + text.replaceAll(" ", "+"))
+        .then(response => response.json())
+        .then(data => {
+            console.log("came here")
+            if(data["result"] === 1){
+                chat.message = "🚫 Watch your language! Message Deleted!"
+                const newMessage = firebase.database().ref('chats/').push();
+                newMessage.set(chat);
+            }
+            else{
+                chat.message = text
+                const newMessage = firebase.database().ref('chats/').push();
+                newMessage.set(chat);}
+        })
+        document.getElementById("message").value=""
         setNewchat({ roomname: '', nickname: '', message: '', date: '', type: '' });
     };
 
@@ -97,11 +113,9 @@ function ChatRoom() {
         <div className="Container">
             <div id="Cont_row">
                 <div id="Cont_col_1">
-                    <div className="UsersCard">
-                        <div className="card_body">
-                            <button onClick={() => { exitChat() }}> Exit Chat </button>
-                        </div >
-                    </div>
+                    <div id="btn_Cont">
+                        <button onClick={() => { exitChat() }}> Exit Chat </button>
+                    </div >
                     {users.map((item, idx) => (
                         <div className="UsersCard">
                             <div className="card_body">
@@ -132,14 +146,14 @@ function ChatRoom() {
                             </div>
                         ))}
                     </ScrollToBottom>
-                    <footer className="StickyFooter">
+                    <div className="StickyFooter">
                         <form className="MessageForm" onSubmit={submitMessage}>
                             <div id="input_msg">
-                            <input type="text" name="message" id="message" placeholder="Enter message here" value={newchat.message} onChange={onChange} />
+                            <input type="text" name="message" id="message" placeholder="Enter message here" onChange={onChange} />
                                 <button variant="primary" type="submit">Send</button>
                             </div>
                         </form>
-                    </footer>
+                    </div>
                 </div>
             </div>
         </div>

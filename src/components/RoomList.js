@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/RoomList.css'
 import { Link, useHistory } from "react-router-dom";
 import Moment from 'moment';
 import firebase from '../Firebase';
@@ -65,22 +66,24 @@ function RoomList() {
     }
 
     return (
+        
         <div>
-            { showLoading && <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif" alt="Loading" id="loading" height="100px" weight="100px" /> }
+           { showLoading && <div className="loadingSpinnerContainer"> <div className="loadingSpinner"> </div> </div> }
             <div id="roomList">
-                <h3> {nickname} 
-                    <button onClick={() => {
-                        localStorage.removeItem('nickname');
-                        history.push('/login');
-                    }}>Logout</button>
-                </h3>
-                <h2>Room List</h2>
-                <div>
-                    <Link to="/addroom">Add Room</Link>
+                <div id= "roomlist_header">
+                    <h3> {nickname} </h3>
+                    <button id="logoutBt" onClick={() => {
+                            localStorage.removeItem('nickname');
+                            history.push('/login');
+                        }}>Logout</button>
+                </div>
+                <div id="roomList_lower_header">
+                    <h2 id="roomListHeading">Room List</h2>
+                    <Link to="/addroom" id="Addroom_but">Add Room</Link>
                 </div>
                 <div id="roomListContainer">
                     {room.map((item, idx) => (
-                        <div class="RoomRows" key={idx} action onClick={() => { enterChatRoom(item.roomname) }}>{item.roomname}</div>
+                        <div class="RoomRows" key={idx} action onClick={() => { enterChatRoom(item.roomname) }}>{idx+1}.  {item.roomname}</div>
                     ))}
                 </div>
             </div>

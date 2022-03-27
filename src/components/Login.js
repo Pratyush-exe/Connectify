@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import firebase from '../Firebase';
 import "../styles/Login.css";
 import img_login from "../images/Untitled.png"
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
+import Swal from 'sweetalert2'
 
 
 function Login() {
@@ -13,7 +15,6 @@ function Login() {
     const [SignUp, setSignUp] = useState(false);
     const ref = firebase.database().ref('users');
     useEffect(() => {
-        console.log("Here")
         if(SignUp===true){
             document.getElementById("formNickname").textContent = "Sign Up"
             document.getElementById("login_login").textContent = "Continue"
@@ -41,7 +42,6 @@ function Login() {
             snapshot.forEach(function(childSnap){
                 console.log(childSnap.val()["nickname"], childSnap.val()["password"])
                 if(childSnap.val()["nickname"] === usid && childSnap.val()["password"] === pswd){
-                    // Login Successfull
                     flag=1
                 }
             })
@@ -53,11 +53,19 @@ function Login() {
             }
             else if(!SignUp){
                 setShowLoading(false); 
-                alert("Incorrect Username/password")
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:'Incorrect Username/password'
+                })
             }
             else if(flag===1 && SignUp){
                 setShowLoading(false);
-                alert("ID exists")
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:'ID already Exists'
+                })
             }
             else if(SignUp){
                 const newUser = firebase.database().ref('users/').push();
@@ -72,8 +80,11 @@ function Login() {
 
     return (
         <div id="mainLoginCont">
-            { showLoading && <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_%28wobbly%29.gif" alt="Loading" id="loading" /> }
-            <div id="loginContainer">
+            { showLoading && <div className="loadingSpinnerContainer"> <div className="loadingSpinner"> </div> </div> }
+            <motion.div id="loginContainer"
+                initial={{marginTop: '190px'}}
+                animate={{marginTop: '150px'}}
+                transition={{duration: 0.3}}>
                 <div id="loginContainer_Cont">
                     <img src={img_login} 
                     id="loginImg" alt="Login"/>
@@ -93,7 +104,7 @@ function Login() {
                         </div>
                     </form>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }
