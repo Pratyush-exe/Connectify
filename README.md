@@ -1,5 +1,5 @@
 # Connectify 
-Connectify - Connecting People
+_Connectify - Connecting People_
 
 **[Click here](https://connectifyapp.netlify.app/) to visit out site!**
 
