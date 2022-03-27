@@ -1,12 +1,12 @@
 import React from 'react'
 import "../styles/Logo.css"
 import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
-
+// background: linear-gradient(134deg, rgb(144 87 219) 0%, rgb(98 16 204) 99%);
 function Logo() {
     return (
         <motion.div id="logo-page-containers"
-            initial={{background: 'linear-gradient(270deg, rgba(93,93,93,1) 0%, rgba(0,0,0,1) 50%)'}}
-            animate={{background: 'linear-gradient(134deg, rgb(106, 152, 240) 0%, rgb(34 55 167) 99%)'}}
+            initial={{background: 'linear-gradient(134deg, rgb(108 127 232) 0%, rgb(98 16 204) 99%'}}
+            animate={{background: 'linear-gradient(134deg, rgb(98 16 204)  0%, rgb(108 127 232) 99%'}}
             transition={{duration: 0.6}}>
             <div id="logo-container">
                 <motion.img id="lungs" src={require("../images/logo.png")}

@@ -4,9 +4,12 @@ import Moment from 'moment';
 import firebase from '../Firebase';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { RiSendPlaneFill } from 'react-icons/ri';
-import { IoExitOutline } from 'react-icons/io5';
+import { IoExitOutline, IoVideocam } from 'react-icons/io5';
 import '../styles/ChatRoom.css'
 import Swal from 'sweetalert2'
+import {BsCameraVideoFill, BsPencilFill} from 'react-icons/bs'
+import {ImYoutube} from 'react-icons/im'
+import {IoLogoGameControllerB} from 'react-icons/io'
 
 function ChatRoom() {
     const [chats, setChats] = useState([]);
@@ -170,10 +173,10 @@ function ChatRoom() {
                 </div>
                 <div id="Cont_col_2">
                     <div id="Options_Chat_Cont">
-                        <button id="play_games_bt" className="Nav_bts" onClick={scribblOnClick}>Play Skribbl</button>
-                        <button id="play_kart_bt" className="Nav_bts" onClick={kartOnClick}>Play Smashkarts</button>
-                        <button id="video_Watch_bt" className="Nav_bts" onClick={ytOnClick}>Watch YoutTube</button>
-                        <button id="videoChat_bt" className="Nav_bts" onClick={videoChatOnlick}>Video Chat</button>
+                        <button id="play_games_bt" className="Nav_bts" onClick={scribblOnClick} title="Play Skribbl"><BsPencilFill/></button>
+                        <button id="play_kart_bt" className="Nav_bts" onClick={kartOnClick} title="Play SmashKart" ><IoLogoGameControllerB/></button>
+                        <button id="video_Watch_bt" className="Nav_bts" onClick={ytOnClick} title="Watch Youtube"><ImYoutube/></button>
+                        <button id="videoChat_bt" className="Nav_bts" onClick={videoChatOnlick} title="Video Chat"><BsCameraVideoFill/></button>
                     </div>
                     <ScrollToBottom className="ChatContent">
                         {chats.map((item, idx) => (
