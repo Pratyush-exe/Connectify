@@ -1,2 +1,97 @@
-.html {
+#roomList {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+#logoutBt {
+  text-decoration: none;
+  font-size: 15px;
+  border: none;
+  color: rgb(98, 16, 204);
+  background-color: white;
+  padding: 10px;
+  border-radius: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100px;
+  cursor: pointer;
+}
+
+#logoutBt:hover {
+  background-color: rgb(221, 221, 221);
+}
+
+#roomlist_header {
+  display: flex;
+  width: 600px;
+  background-color: rgb(98, 16, 204);
+  color: white;
+  border-radius: 20px;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px 40px 10px 40px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 20%);
+  margin-top: 50px;
+}
+
+#roomList_lower_header {
+  display: flex;
+  align-items: center;
+  width: 600px;
+  justify-content: space-between;
+  background-color: white;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 20%);
+}
+
+#Addroom_but {
+  text-decoration: none;
+  color: white;
+  background-color: rgb(98, 16, 204);
+  padding: 10px;
+  border-radius: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#Addroom_but:hover {
+  background-color: rgb(85, 19, 170);
+}
+
+#roomListContainer {
+  display: flex;
+  width: 600px;
+  background-color: white;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 20px;
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  margin-top: 20px;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 20%);
+}
+
+.RoomRows {
+  background-color: lightgrey;
+  padding: 10px;
+  border-radius: 20px;
+  padding-left: 30px;
+  margin-top: 10px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.RoomRows:hover {
+  background-color: rgb(182, 182, 182);
+  transition: 0.2s;
 }
