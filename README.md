@@ -11,7 +11,7 @@ It's a friendly and safe social platform where people can meet, interract with e
 
 # Technologies Used
 Major Techs used include React, Firebase, Python, Heroku, sklearn.
-[Github Link](https://github.com/Pratyush-exe/Connectify-API) for API code of message 
+[Github Link](https://github.com/Pratyush-exe/Connectify-API) for API code of message. The API is deployed in Heroku, created using NLP algorithms and Flask.
 
 
 # How to use?
