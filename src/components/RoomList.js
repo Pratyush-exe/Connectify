@@ -66,7 +66,6 @@ function RoomList() {
     }
 
     return (
-        
         <div>
            { showLoading && <div className="loadingSpinnerContainer"> <div className="loadingSpinner"> </div> </div> }
             <div id="roomList">

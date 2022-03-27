@@ -6,6 +6,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { RiSendPlaneFill } from 'react-icons/ri';
 import { IoExitOutline } from 'react-icons/io5';
 import '../styles/ChatRoom.css'
+import Swal from 'sweetalert2'
 
 function ChatRoom() {
     const [chats, setChats] = useState([]);
@@ -57,13 +58,28 @@ function ChatRoom() {
 
     const submitMessage = (e) => {
         e.preventDefault();
+        
         const chat = newchat;
         chat.roomname = roomname;
         chat.nickname = nickname;
         chat.date = Moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
         chat.type = 'message';
-        const newMessage = firebase.database().ref('chats/').push();
-        newMessage.set(chat);
+
+        let text = document.getElementById("message").value
+        fetch("https://connectify-api.herokuapp.com/CheckOffensive?text=" + text.replaceAll(" ", "+"))
+        .then(response => response.json())
+        .then(data => {
+            if(data["result"] === 1){
+                chat.message = "🚫 Watch your language! Message Deleted!"
+                const newMessage = firebase.database().ref('chats/').push();
+                newMessage.set(chat);
+            }
+            else{
+                chat.message = text
+                const newMessage = firebase.database().ref('chats/').push();
+                newMessage.set(chat);}
+        })
+        document.getElementById("message").value=""
         setNewchat({ roomname: '', nickname: '', message: '', date: '', type: '' });
     };
 
@@ -95,6 +111,42 @@ function ChatRoom() {
         history.goBack();
     }
 
+    function videoChatOnlick() {
+        Swal.fire({
+            icon: 'information',
+            title: 'Loading...',
+            text:'Share the joining link in the chat and Enjoy!'
+        })
+        setTimeout(()=>{window.open("https://jump.chat/c/", "_blank");}, 2000)
+    }
+
+    function ytOnClick() {
+        Swal.fire({
+            icon: 'information',
+            title: 'Loading...',
+            text: 'Share the joining link in the chat and Enjoy!'
+        })
+        setTimeout(()=>{window.open("https://sync-tube.de/create", "_blank");}, 2000)
+    }
+
+    function scribblOnClick() {
+        Swal.fire({
+            icon: 'information',
+            title: 'Loading...',
+            text: 'Share the joining link in the chat and Enjoy!'
+        })
+        setTimeout(()=>{window.open("https://skribbl.io/", "_blank");}, 2000)
+    }
+
+    function kartOnClick() {
+        Swal.fire({
+            icon: 'information',
+            title: 'Loading...',
+            text: 'Share the joining link in the chat and Enjoy!'
+        })
+        setTimeout(()=>{window.open("https://smashkarts.io/", "_blank");}, 2000)
+    }
+
     return (
         <div className="Container">
             <div id="Cont_row">
@@ -114,14 +166,20 @@ function ChatRoom() {
                             </div >
                         </div>
                     ))}
+                    <p id="chat-notice">If members not visible, try rejoining the room.</p>
                 </div>
                 <div id="Cont_col_2">
+                    <div id="Options_Chat_Cont">
+                        <button id="play_games_bt" className="Nav_bts" onClick={scribblOnClick}>Play Skribbl</button>
+                        <button id="play_kart_bt" className="Nav_bts" onClick={kartOnClick}>Play Smashkarts</button>
+                        <button id="video_Watch_bt" className="Nav_bts" onClick={ytOnClick}>Watch YoutTube</button>
+                        <button id="videoChat_bt" className="Nav_bts" onClick={videoChatOnlick}>Video Chat</button>
+                    </div>
                     <ScrollToBottom className="ChatContent">
                         {chats.map((item, idx) => (
                             <div key={idx} className="MessageBox">
                                 {item.type ==='join'||item.type === 'exit'?
                                     <div className="ChatStatus">
-                                        {/* <span className="ChatDate">{item.date}</span> */}
                                         <span className="ChatContentCenter">{item.message}</span>
                                     </div>:
                                     <div className="ChatMessage">

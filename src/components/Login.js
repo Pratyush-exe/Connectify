@@ -5,10 +5,10 @@ import "../styles/Login.css";
 import img_login from "../images/Untitled.png"
 import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 import Swal from 'sweetalert2'
+import Logo from './Logo';
 
 
 function Login() {
-    console.log("Exist")
     const history = useHistory();
     const [creds, setCreds] = useState({ nickname: '' , password: ''});
     const [showLoading, setShowLoading] = useState(false);
@@ -80,6 +80,7 @@ function Login() {
 
     return (
         <div id="mainLoginCont">
+            <Logo />
             { showLoading && <div className="loadingSpinnerContainer"> <div className="loadingSpinner"> </div> </div> }
             <motion.div id="loginContainer"
                 initial={{marginTop: '190px'}}
@@ -94,7 +95,7 @@ function Login() {
                             e.persist();
                             setCreds({...creds, "nickname": e.target.value});
                         }} />
-                        <input type="password" id="signup-password" placeholder="Password" />
+                        <input type="text" id="signup-password" placeholder="Password" />
                         <button type="submit" id="login_login"> Login </button>
                         <div id="divStatus">
                             <p id="loginStatus">New User? Please </p>
