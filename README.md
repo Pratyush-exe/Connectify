@@ -27,7 +27,7 @@ Major Techs used include React, Firebase, Python, Heroku, sklearn.
 `sudo apt install nodejs`
 
 * clone repository
-`git clone <link>`
+`git clone <https://github.com/Pratyush-exe/Connectify>`
 
 * install dependencies in root folder
 `npm i`
