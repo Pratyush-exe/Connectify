@@ -94,7 +94,7 @@ function Login() {
                             e.persist();
                             setCreds({...creds, "nickname": e.target.value});
                         }} />
-                        <input type="text" id="signup-password" placeholder="Password" />
+                        <input type="password" id="signup-password" placeholder="Password" />
                         <button type="submit" id="login_login"> Login </button>
                         <div id="divStatus">
                             <p id="loginStatus">New User? Please </p>

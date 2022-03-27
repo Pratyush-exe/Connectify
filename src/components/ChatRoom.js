@@ -3,7 +3,9 @@ import { useHistory, useParams } from "react-router-dom";
 import Moment from 'moment';
 import firebase from '../Firebase';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import '../styles/ChatRoom.css';
+import { RiSendPlaneFill } from 'react-icons/ri';
+import { IoExitOutline } from 'react-icons/io5';
+import '../styles/ChatRoom.css'
 
 function ChatRoom() {
     const [chats, setChats] = useState([]);
@@ -55,29 +57,13 @@ function ChatRoom() {
 
     const submitMessage = (e) => {
         e.preventDefault();
-        
         const chat = newchat;
         chat.roomname = roomname;
         chat.nickname = nickname;
         chat.date = Moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
         chat.type = 'message';
-
-        let text = document.getElementById("message").value
-        fetch("http://127.0.0.1:5000/CheckOffensive?text=" + text.replaceAll(" ", "+"))
-        .then(response => response.json())
-        .then(data => {
-            console.log("came here")
-            if(data["result"] === 1){
-                chat.message = "🚫 Watch your language! Message Deleted!"
-                const newMessage = firebase.database().ref('chats/').push();
-                newMessage.set(chat);
-            }
-            else{
-                chat.message = text
-                const newMessage = firebase.database().ref('chats/').push();
-                newMessage.set(chat);}
-        })
-        document.getElementById("message").value=""
+        const newMessage = firebase.database().ref('chats/').push();
+        newMessage.set(chat);
         setNewchat({ roomname: '', nickname: '', message: '', date: '', type: '' });
     };
 
@@ -113,9 +99,14 @@ function ChatRoom() {
         <div className="Container">
             <div id="Cont_row">
                 <div id="Cont_col_1">
-                    <div id="btn_Cont">
-                        <button onClick={() => { exitChat() }}> Exit Chat </button>
-                    </div >
+                    <div className="UsersCardHeader">
+                        <div className="card_body_header">
+                            <h2>Members</h2>
+                            <button onClick={() => { exitChat() }}> 
+                                    Exit Room <IoExitOutline/>
+                            </button>
+                        </div >
+                    </div>
                     {users.map((item, idx) => (
                         <div className="UsersCard">
                             <div className="card_body">
@@ -130,7 +121,7 @@ function ChatRoom() {
                             <div key={idx} className="MessageBox">
                                 {item.type ==='join'||item.type === 'exit'?
                                     <div className="ChatStatus">
-                                        <span className="ChatDate">{item.date}</span>
+                                        {/* <span className="ChatDate">{item.date}</span> */}
                                         <span className="ChatContentCenter">{item.message}</span>
                                     </div>:
                                     <div className="ChatMessage">
@@ -146,14 +137,14 @@ function ChatRoom() {
                             </div>
                         ))}
                     </ScrollToBottom>
-                    <div className="StickyFooter">
+                    <footer className="StickyFooter">
                         <form className="MessageForm" onSubmit={submitMessage}>
                             <div id="input_msg">
-                            <input type="text" name="message" id="message" placeholder="Enter message here" onChange={onChange} />
-                                <button variant="primary" type="submit">Send</button>
+                                <input id="message" type="text" name="message" placeholder="Enter message here" value={newchat.message} onChange={onChange} />
+                                <button id="submitButton" variant="primary" type="submit"> <RiSendPlaneFill/> </button>
                             </div>
                         </form>
-                    </div>
+                    </footer>
                 </div>
             </div>
         </div>
