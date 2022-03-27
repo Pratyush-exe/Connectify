@@ -12,9 +12,9 @@ It's a friendly and safe social platform where people can meet, interract with e
 1. Visit the website. 
 2. If you are a existing user, enter your username and password and login. If you are a new user, click on **SignUp** button below the **Login** button, enter details and enjoy!
 3. You can see a list of Rooms that are available, click on anyone and continue chatting. If you wish to create a new Room, click on Add Room (room name should not exist), and begin!
-4. Things that can be done inside the Chat Room:
-a. You can chat with people in the room. Using AI algorithms, the chat is always clean!
-b. sdfdsf 
+4. Things that can be done inside the Chat Room-
+    1. You can chat with people in the room. Using AI algorithms, the chat is always clean!
+    2. sdfdsf 
 
 # Technologies Used
 Major Techs used include React, Firebase, Python, Heroku, sklearn.
